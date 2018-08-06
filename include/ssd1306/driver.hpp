@@ -10,7 +10,15 @@ namespace ssd1306
 		protected:
 			enum : uint8_t { Command = 0, Data = 1 }; // Signals
 			enum : uint8_t { Horizontal = 0, Vertical = 1, Page = 2 }; // Addressing modes
-			enum class Level : uint8_t { Low = 0, Medium = 0x20, High = 0x30 }; // Vcommh deselect levels
+			
+			enum class Voltage : uint8_t 
+			{ 
+				Low = 0,       // Factor 0.65 * Vcc. For Vcc = 5V it gives 3.25V
+				Medium = 0x20, // Factor 0.77 * Vcc. For Vcc = 5V it gives 3.85V
+				High = 0x30,   // Factor 0.83 * Vcc. For Vcc = 5V it gives 4.15V
+				Highest = 0x40 // Undocumented, but works, and gives maximum brightness. Factor unknown.
+				// Some says that factor of highest is 0.9, but it is not covered by any measurements.
+			}; // Voltage levels
 			
 			T1 & d0;
 			T2 & d1;
@@ -103,7 +111,7 @@ namespace ssd1306
 			// Timing commands
 			void setDivideAndFrequency(uint8_t divide, uint8_t freq) { wc(0xD5); wc(divide | (freq << 4)); }
 			void setPreChargePeriod(uint8_t phase1, uint8_t phase2) { wc(0xD9); wc(phase1 | (phase2 << 4)); }
-			void setVcommhLevel(Level level) { wc(0xDB); wc(static_cast<uint8_t>(level)); }
+			void setVcommhLevel(Voltage level) { wc(0xDB); wc(static_cast<uint8_t>(level)); }
 			inline void nop() { wc(0xE0); }
 
 			// Charge pump
