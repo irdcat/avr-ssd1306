@@ -18,6 +18,7 @@ Library usage example:
 
 int main()
 {
+	/* Set correct data direction values of the used ports */
 	auto display = ssd1306::initDisplay128x64(port_c.p0, port_c.p1, port_c.p2, port_c.p3, port_c.p4);
 
 	while(1)
