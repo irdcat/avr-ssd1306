@@ -57,7 +57,7 @@ namespace ssd1306
 				if(x < 0 || x > Width || y < 0 || y > Height)
 					return;
 
-				for(auto i = 0; i < 5; i++)
+				for(auto i = 0u; i < 5; i++)
 				{
 					uint8_t ch = pgm_read_byte(&font[static_cast<uint8_t>(c-32) * 5 + i]);
 					if(x+i < Width) 

@@ -50,7 +50,7 @@ namespace ssd1306
 				setDivideAndFrequency(0, 8);
 				setPreChargePeriod(1, 15);
 				setComPinsConfiguration(true, false);
-				setVcommhLevel(Level::Low);
+				setVcommhLevel(Voltage::Low);
 				enableChargePump(true);
 				continueRamDisplay();
 				setNormalDisplay();
