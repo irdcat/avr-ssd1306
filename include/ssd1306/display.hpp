@@ -100,7 +100,7 @@ namespace ssd1306
 			{
 				for(int px = x, z = 0, div = 10000; div >= 1; div /= 10)
 				{
-					auto r = number % div;
+					auto r = (number / div) % 10;
 					if(r == 0 && (zero_fill || z))
 					{
 						drawChar(px, y, r+48);
