@@ -98,7 +98,7 @@ namespace ssd1306
 
 			void drawNumber(uint8_t x, uint8_t y, uint16_t number, bool zero_fill = false)
 			{
-				for(int px = x, z = 0, div = 10000; div >= 1; div/10)
+				for(int px = x, z = 0, div = 10000; div >= 1; div /= 10)
 				{
 					auto r = number % div;
 					if(r == 0 && (zero_fill || z))
