@@ -38,23 +38,23 @@ namespace ssd1306
 				_delay_ms(60);
 				res = 1;
 
-				setDisplayOff();
-				setColumnStartAddress(0);
-				setDisplayStartLine(0);
-				setAddressingMode(Page);
-				setContrast(210);
-				setSegmentRemap(false);
-				setComScanDirection(false);
-				setMuxRatio(63);
-				setDisplayOffset(0);
-				setDivideAndFrequency(0, 8);
-				setPreChargePeriod(1, 15);
-				setComPinsConfiguration(true, false);
-				setVcommhLevel(Voltage::Low);
-				enableChargePump(true);
-				continueRamDisplay();
-				setNormalDisplay();
-				setDisplayOn();
+				this->setDisplayOff();
+				this->setColumnStartAddress(0);
+				this->setDisplayStartLine(0);
+				this->setAddressingMode(Page);
+				this->setContrast(210);
+				this->setSegmentRemap(false);
+				this->setComScanDirection(false);
+				this->setMuxRatio(63);
+				this->setDisplayOffset(0);
+				this->setDivideAndFrequency(0, 8);
+				this->setPreChargePeriod(1, 15);
+				this->setComPinsConfiguration(true, false);
+				this->setVcommhLevel(Voltage::Low);
+				this->enableChargePump(true);
+				this->continueRamDisplay();
+				this->setNormalDisplay();
+				this->setDisplayOn();
 			}
 
 		protected:
@@ -86,12 +86,12 @@ namespace ssd1306
 
 			// Fundamental commands
 			void setContrast(uint8_t contrast) { wc(0x81); wc(contrast); }
-			inline void continueRamDisplay() { wc(0xA4); }
-			inline void setEntireDisplayOn() { wc(0xA5); }
-			inline void setNormalDisplay() { wc(0xA6); }
-			inline void setInverseDisplay() { wc(0xA7); }
-			inline void setDisplayOff() { wc(0xAE); }
-			inline void setDisplayOn() { wc(0xAF); }
+			void continueRamDisplay() { wc(0xA4); }
+			void setEntireDisplayOn() { wc(0xA5); }
+			void setNormalDisplay() { wc(0xA6); }
+			void setInverseDisplay() { wc(0xA7); }
+			void setDisplayOff() { wc(0xAE); }
+			void setDisplayOn() { wc(0xAF); }
 
 			// Addressing commands
 			void setColumnStartAddress(uint8_t start) { wc(start & 0x0F); wc((start >> 4) | 0x10); }
@@ -101,10 +101,10 @@ namespace ssd1306
 			void setPageStartAddress(uint8_t start) { wc(0xB0 | start); }
 
 			// Hardware Configuration
-			inline void setDisplayStartLine(uint8_t start) { wc(0x40 | start); }
-			inline void setSegmentRemap(bool inverse) { wc(0xA0 | inverse); }
+			void setDisplayStartLine(uint8_t start) { wc(0x40 | start); }
+			void setSegmentRemap(bool inverse) { wc(0xA0 | inverse); }
 			void setMuxRatio(uint8_t ratio) { wc(0xA8); wc(ratio); }
-			inline void setComScanDirection(bool inverse) { wc(0xC0 | (inverse << 3)); }
+			void setComScanDirection(bool inverse) { wc(0xC0 | (inverse << 3)); }
 			void setDisplayOffset(uint8_t offset) { wc(0xD3); wc(offset); }
 			void setComPinsConfiguration(bool sequental, bool remap) { wc(0xDA); wc((sequental << 4) | (remap << 5) | 2); }
 
@@ -112,7 +112,7 @@ namespace ssd1306
 			void setDivideAndFrequency(uint8_t divide, uint8_t freq) { wc(0xD5); wc(divide | (freq << 4)); }
 			void setPreChargePeriod(uint8_t phase1, uint8_t phase2) { wc(0xD9); wc(phase1 | (phase2 << 4)); }
 			void setVcommhLevel(Voltage level) { wc(0xDB); wc(static_cast<uint8_t>(level)); }
-			inline void nop() { wc(0xE0); }
+			void nop() { wc(0xE0); }
 
 			// Charge pump
 			void enableChargePump(bool enable) { wc(0x8D); wc(0x10 | (enable << 2)); }

@@ -27,29 +27,29 @@ namespace ssd1306
 
 			inline void clear() { fill(0x00); }
 
-			void putPixel(uint8_t x, uint8_t y, uint8_t color)
+			void putPixel(uint8_t x, uint8_t y, bool color)
 			{
 				if(x < 0 || x > Width || y < 0 || y > Height)
 					return;
 
 				auto & seg = buffer[y/8 * Width + x];
-				seg = (seg & ~(1 << (y % 8))) | (!!color << (y % 8));
+				seg = (seg & ~(1 << (y % 8))) | (color << (y % 8));
 			}
 
-			void drawRect(uint8_t x, uint8_t y, uint8_t width, uint8_t height, uint8_t color)
+			void drawRect(uint8_t x, uint8_t y, uint8_t width, uint8_t height, bool color)
 			{
 				for(int px = x, left = width + x; px < left; px++)
 					for(int py = y, bottom = height + y; py < bottom; py++)
 						if(px == x || px == left-1 || py == y || py == bottom-1)
-							putPixel(px, py, color);
+							this->putPixel(px, py, color);
 			}
 
-			void fillRect(uint8_t x, uint8_t y, uint8_t width, uint8_t height, uint8_t color)
+			void fillRect(uint8_t x, uint8_t y, uint8_t width, uint8_t height, bool color)
 			{
 				for(int px = x, left = width + x; px < left; px++)
 					for(int py = y, bottom = height + y; py < bottom; py++)
 						if(px != x || px != left-1 || py != y || py != bottom-1)
-							putPixel(px, py, color);
+							this->putPixel(px, py, color);
 			}
 
 			void drawChar(uint8_t x, uint8_t y, char c)
@@ -61,19 +61,19 @@ namespace ssd1306
 				{
 					uint8_t ch = pgm_read_byte(&font[static_cast<uint8_t>(c-32) * 5 + i]);
 					if(x+i < Width) 
-						buffer[(y / 8) * Width + x + i] |= ch << (y % 8);
+						this->buffer[(y / 8) * Width + x + i] |= ch << (y % 8);
 					else
 						break;
 					
-					if(y+7 < Height) 
-						buffer[((y + 7) / 8) * Width + x + i] |= ch >> (7 - (y % 8));
+					if(y+7u < Height) 
+						this->buffer[((y + 7) / 8) * Width + x + i] |= ch >> (7 - (y % 8));
 				}
 			}
 
 			void drawString(uint8_t x, uint8_t y, const char * ptr)
 			{
 				for(auto i = 0; ptr[i] != 0; i++)
-					drawChar(x+(i*6), y, ptr[i]);
+					this->drawChar(x+(i*6), y, ptr[i]);
 			}
 
 			void drawBitmap(uint8_t x, uint8_t y, uint8_t width, uint8_t height, const uint8_t * bitmap)
@@ -91,7 +91,7 @@ namespace ssd1306
 							byte = pgm_read_byte(&bitmap[py/8 * width + px]);
 
 						if(byte & 0x80)
-							putPixel(x+px, y+py, 1);
+							this->putPixel(x+px, y+py, 1);
 					}
 				}
 			}
@@ -103,13 +103,13 @@ namespace ssd1306
 					auto r = (number / div) % 10;
 					if(r == 0 && (zero_fill || z))
 					{
-						drawChar(px, y, r+48);
+						this->drawChar(px, y, r+48);
 						px += 6;
 					}
 					else if(r != 0)
 					{
 						z = 1;
-						drawChar(px, y, r+48);
+						this->drawChar(px, y, r+48);
 						px += 6;
 					}
 				}
